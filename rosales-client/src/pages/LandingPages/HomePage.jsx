@@ -1,8 +1,8 @@
-import Button from '../components/Button';
-import digicamImg from '../assets/images/digicam.jpg';
-import cinemaImg from '../assets/images/cinema.jpg';
-import framesImg from '../assets/images/frames.jpg';
-import paperbagImg from '../assets/images/paperbag.jpg';
+import Button from '../../components/Button';
+import digicamImg from '../../assets/images/digicam.jpg';
+import cinemaImg from '../../assets/images/cinema.jpg';
+import framesImg from '../../assets/images/frames.jpg';
+import paperbagImg from '../../assets/images/paperbag.jpg';
  
 const HomePage = () => {
  

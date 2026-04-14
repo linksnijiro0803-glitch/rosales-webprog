@@ -1,10 +1,10 @@
-import Button from "../components/Button";
+import Button from "../../components/Button";
 
-import espressoImg from '../assets/images/espresso.jpg';
-import carsImg from '../assets/images/cars.jpg';
-import booksImg from '../assets/images/books.jpg';
-import dropsImg from '../assets/images/drops.jpg';
-import coffeeImg from '../assets/images/coffee.jpg';
+import espressoImg from '../../assets/images/espresso.jpg';
+import carsImg from '../../assets/images/cars.jpg';
+import booksImg from '../../assets/images/books.jpg';
+import dropsImg from '../../assets/images/drops.jpg';
+import coffeeImg from '../../assets/images/coffee.jpg';
 
 const AboutPage = () => {
 

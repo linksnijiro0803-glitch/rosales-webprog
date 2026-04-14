@@ -46,6 +46,22 @@ const NavBar = () => {
         {/* NAV LINKS */}
 <nav className="hidden items-center gap-2 md:flex">
 
+  <div className="hidden items-center gap-2 md:flex">
+  <NavLink
+    to="/signin"
+    className="rounded-full border-2 border-[#724B39] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#CF9D7B] transition hover:bg-[#724B39] hover:text-white"
+  >
+    Sign In
+  </NavLink>
+
+  <NavLink
+    to="/signup"
+    className="rounded-full border-2 border-[#CF9D7B] bg-[#CF9D7B] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.24em] text-[#162127] transition hover:opacity-90"
+  >
+    Sign Up
+  </NavLink>
+</div>
+
           {links.map((link) => (
 <NavLink
 
