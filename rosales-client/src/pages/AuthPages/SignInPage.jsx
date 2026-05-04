@@ -58,14 +58,14 @@ const SignInPage = () => {
           </button>
         </div>
 
-        <Button type="submit" variant="primary" className={actionButtonClassName}>
+        <Button type="button" variant="primary" className={actionButtonClassName}>
           SIGN IN
         </Button>
       </form>
 
       <div className="mt-8 border-t border-[#724B39] pt-6 text-sm text-[#CF9D7B]">
         No account yet?{' '}
-        <Link to="/signup" className="font-semibold text-white hover:text-[#CF9D7B]">
+        <Link to="/auth/signup" className="font-semibold text-white hover:text-[#CF9D7B]">
           Sign Up
         </Link>
       </div>

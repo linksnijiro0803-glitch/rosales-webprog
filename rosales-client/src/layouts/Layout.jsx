@@ -7,13 +7,13 @@ import Footer from '../components/Footer';
 const Layout = () => {
 
   return (
-<div className="min-h-screen bg-[#162127] text-[#0C1519] flex flex-col">
+<div className="min-h-screen bg-[#E8D2C1] text-[#162127] flex flex-col">
 
       {/* Navbar */}
 <NavBar />
 
       {/* Main Content */}
-<main className="flex-grow pt-20">
+<main className="flex-grow pt-24">
 <Outlet />
 </main>
 

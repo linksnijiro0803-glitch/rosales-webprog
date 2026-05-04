@@ -85,7 +85,7 @@ const SignUpPage = () => {
         </div>
 
         {/* Submit */}
-        <Button type="submit" variant="primary" className={actionButtonClassName}>
+        <Button type="button" variant="primary" className={actionButtonClassName}>
           CREATE ACCOUNT
         </Button>
       </form>
@@ -93,7 +93,7 @@ const SignUpPage = () => {
       {/* Footer */}
       <div className="mt-8 border-t border-[#724B39] pt-6 text-sm text-[#CF9D7B]">
         Already have an account?{' '}
-        <Link to="/signin" className="font-semibold text-white hover:text-[#CF9D7B]">
+        <Link to="/auth/signin" className="font-semibold text-white hover:text-[#CF9D7B]">
           Sign In
         </Link>
       </div>
