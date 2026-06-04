@@ -63,6 +63,11 @@ const UsersPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [newUser, setNewUser] = useState(defaultUser);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [genderFilter, setGenderFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [formError, setFormError] = useState("");
 
   const loadUsers = async () => {
     try {
@@ -111,6 +116,7 @@ const UsersPage = () => {
     setIsEditing(false);
     setEditUserId(null);
     setNewUser(defaultUser);
+    setFormError("");
     setOpen(true);
   };
 
@@ -119,6 +125,7 @@ const UsersPage = () => {
     setIsEditing(false);
     setEditUserId(null);
     setNewUser(defaultUser);
+    setFormError("");
   };
 
   const handleEdit = (id) => {
@@ -132,11 +139,43 @@ const UsersPage = () => {
       });
       setEditUserId(id);
       setIsEditing(true);
+      setFormError("");
       setOpen(true);
     }
   };
 
+  const validateUser = () => {
+    if (!/^\d+$/.test(newUser.age)) {
+      return "Age must be numbers only.";
+    }
+
+    if (!/^\d{11}$/.test(newUser.contactNumber)) {
+      return "Contact number must be exactly 11 digits.";
+    }
+
+    if (/\s/.test(newUser.username)) {
+      return "Username must not contain spaces.";
+    }
+
+    if (!isEditing && newUser.password.length < 8) {
+      return "Password must be at least 8 characters.";
+    }
+
+    if (isEditing && newUser.password && newUser.password.length < 8) {
+      return "Password must be at least 8 characters.";
+    }
+
+    return "";
+  };
+
   const handleSaveUser = async () => {
+    const validationError = validateUser();
+
+    if (validationError) {
+      setFormError(validationError);
+      return;
+    }
+
     try {
       const userData = { ...newUser };
 
@@ -154,6 +193,7 @@ const UsersPage = () => {
       handleClose();
     } catch (error) {
       console.error("Error saving user:", error.response?.data || error.message);
+      setFormError(error.response?.data?.message || "Error saving user.");
     }
   };
 
@@ -208,6 +248,22 @@ const UsersPage = () => {
     },
   ];
 
+  const filteredUsers = users.filter((user) => {
+    const searchValue = searchTerm.toLowerCase();
+    const matchesSearch =
+      !searchValue ||
+      [user.firstName, user.lastName, user.email, user.username]
+        .some((value) => String(value || "").toLowerCase().includes(searchValue));
+    const matchesRole = roleFilter === "all" || user.type === roleFilter;
+    const matchesGender = genderFilter === "all" || user.gender === genderFilter;
+    const matchesStatus =
+      statusFilter === "all" ||
+      (statusFilter === "active" && Boolean(user.isActive)) ||
+      (statusFilter === "inactive" && !user.isActive);
+
+    return matchesSearch && matchesRole && matchesGender && matchesStatus;
+  });
+
   return (
     <>
       <Stack
@@ -257,6 +313,12 @@ const UsersPage = () => {
             spacing={3}
             sx={{ mt: 2 }}
           >
+            {formError && (
+              <Typography color="error" variant="body2">
+                {formError}
+              </Typography>
+            )}
+
             <FormControl fullWidth variant="standard">
               <Box sx={{ display: "flex", alignItems: "flex-end", mb: 2 }}>
                 <AccountCircle sx={{ color: "action.active", mr: 1, my: 0.5 }} />
@@ -419,9 +481,65 @@ const UsersPage = () => {
         </Box>
       </Modal>
 
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={2}
+        sx={{ mb: 2 }}
+      >
+        <TextField
+          label="Search users"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          sx={{ minWidth: 240 }}
+        />
+
+        <FormControl sx={{ minWidth: 150 }}>
+          <InputLabel id="role-filter-label">Role</InputLabel>
+          <Select
+            labelId="role-filter-label"
+            label="Role"
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="admin">admin</MenuItem>
+            <MenuItem value="editor">editor</MenuItem>
+            <MenuItem value="viewer">viewer</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ minWidth: 150 }}>
+          <InputLabel id="gender-filter-label">Gender</InputLabel>
+          <Select
+            labelId="gender-filter-label"
+            label="Gender"
+            value={genderFilter}
+            onChange={(e) => setGenderFilter(e.target.value)}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="Male">Male</MenuItem>
+            <MenuItem value="Female">Female</MenuItem>
+          </Select>
+        </FormControl>
+
+        <FormControl sx={{ minWidth: 150 }}>
+          <InputLabel id="status-filter-label">Status</InputLabel>
+          <Select
+            labelId="status-filter-label"
+            label="Status"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <MenuItem value="all">All</MenuItem>
+            <MenuItem value="active">Active</MenuItem>
+            <MenuItem value="inactive">Inactive</MenuItem>
+          </Select>
+        </FormControl>
+      </Stack>
+
       <Box sx={{ height: 500, width: "100%", mb: 5 }}>
         <DataGrid
-          rows={users}
+          rows={filteredUsers}
           columns={columns}
           getRowId={(row) => row._id}
           loading={loading}
